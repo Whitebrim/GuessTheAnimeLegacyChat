@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "7F9Cn5cTNrTSLjpi0STjmMBt8s1PB7zLDVRu3ZnY6l50MXq0ilUBIc3fbD/SNisVPHf2rSDbx5qxY5b+DPz1Gg==",
+  "dgSpecHash": "OroPlgp9SRGFykP4IE8yJ7oEv3c5odZmhloGhBQQyWS5dNM/b48+CY85P+hKRYRWqxarsDOXQ5Rby27v5M+nPw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Whitebrim\\source\\repos\\Chat\\Chat.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Whitebrim\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.10.8\\microsoft.visualstudio.azure.containers.tools.targets.1.10.8.nupkg.sha512",
-    "C:\\Users\\Whitebrim\\.nuget\\packages\\mysqlconnector\\0.64.2\\mysqlconnector.0.64.2.nupkg.sha512"
+    "C:\\Users\\Whitebrim\\.nuget\\packages\\mysqlconnector\\0.64.2\\mysqlconnector.0.64.2.nupkg.sha512",
+    "C:\\Users\\Whitebrim\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
   ],
   "logs": []
 }

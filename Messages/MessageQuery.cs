@@ -4,7 +4,7 @@ using System.Data.Common;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 
-namespace Chat
+namespace Chat.Messages
 {
     public class MessageQuery
     {
@@ -15,7 +15,7 @@ namespace Chat
             Db = db;
         }
 
-        public async Task<Message> FindOneAsync(int id)
+        public async Task<MessageBase> FindOneAsync(int id)
         {
             using var cmd = Db.Connection.CreateCommand();
             cmd.CommandText = @"SELECT * FROM `legacychat` WHERE `id` = @id";
@@ -29,10 +29,10 @@ namespace Chat
             return result.Count > 0 ? result[0] : null;
         }
 
-        public async Task<List<Message>> LatestPostsAsync()
+        public async Task<List<MessageBase>> LatestPostsAsync()
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"SELECT * FROM `legacychat` ORDER BY `id` DESC LIMIT 20;";
+            cmd.CommandText = @"SELECT * FROM( SELECT * FROM `legacychat` ORDER BY `id` DESC LIMIT 20) legacychat ORDER BY id ASC;";
             return await ReadAllAsync(await cmd.ExecuteReaderAsync());
         }
 
@@ -45,19 +45,19 @@ namespace Chat
             await txn.CommitAsync();
         }
 
-        private async Task<List<Message>> ReadAllAsync(DbDataReader reader)
+        private async Task<List<MessageBase>> ReadAllAsync(DbDataReader reader)
         {
-            var posts = new List<Message>();
+            var posts = new List<MessageBase>();
             using (reader)
             {
                 while (await reader.ReadAsync())
                 {
-                    var post = new Message(Db)
+                    var post = new MessageBase(Db)
                     {
                         id = reader.GetInt32(0),
-                        nickname = reader.GetString(1),
-                        messageBody = reader.GetString(2),
-                        messageDate = reader.GetDateTime(3),
+                        UserId = reader.GetString(1),
+                        Message = reader.GetString(2),
+                        Date = reader.GetDateTime(3).ToString("dd.MM.yy HH:mm:ss"),
                     };
                     posts.Add(post);
                 }

@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Chat.Messages;
 
 namespace Chat.Controllers
 {
@@ -19,7 +20,8 @@ namespace Chat.Controllers
             await Db.Connection.OpenAsync();
             var query = new MessageQuery(Db);
             var result = await query.LatestPostsAsync();
-            return new OkObjectResult(result);
+            var json = await Task.Run(() => JsonConvert.SerializeObject(result));
+            return new OkObjectResult(json);
         }
 
         // GET api/5
@@ -31,35 +33,42 @@ namespace Chat.Controllers
             var result = await query.FindOneAsync(id);
             if (result is null)
                 return new NotFoundResult();
-            return new OkObjectResult(result);
+            var json = await Task.Run(() => JsonConvert.SerializeObject(result));
+            return new OkObjectResult(json);
         }
 
         // POST api
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]Message body)
+        public async Task<IActionResult> Post(string userId, string text)
         {
+            MessageBase body = new MessageBase(userId, text);
             await Db.Connection.OpenAsync();
             body.Db = Db;
             await body.InsertAsync();
-            return new OkObjectResult(body);
+            var query = new MessageQuery(Db);
+            var result = await query.LatestPostsAsync();
+            var json = await Task.Run(() => JsonConvert.SerializeObject(result));
+            return new OkObjectResult(json);
         }
 
+        /*
         // PUT api/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutOne(int id, [FromBody]Message body)
+        public async Task<IActionResult> PutOne(int id, [FromBody]MessageBase body)
         {
             await Db.Connection.OpenAsync();
             var query = new MessageQuery(Db);
             var result = await query.FindOneAsync(id);
             if (result is null)
                 return new NotFoundResult();
-            result.nickname = body.nickname;
-            result.messageBody = body.messageBody;
-            result.messageDate = body.messageDate;
+            result.UserId = body.UserId;
+            result.Message = body.Message;
+            result.Date = body.Date;
             await result.UpdateAsync();
             return new OkObjectResult(result);
-        }
+        }*/
 
+        /*
         // DELETE api/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOne(int id)
@@ -71,8 +80,9 @@ namespace Chat.Controllers
                 return new NotFoundResult();
             await result.DeleteAsync();
             return new OkResult();
-        }
+        }*/
 
+            /*
         // DELETE api
         [HttpDelete]
         public async Task<IActionResult> DeleteAll()
@@ -81,7 +91,7 @@ namespace Chat.Controllers
             var query = new MessageQuery(Db);
             await query.DeleteAllAsync();
             return new OkResult();
-        }
+        }*/
 
         public AppDb Db { get; }
     }

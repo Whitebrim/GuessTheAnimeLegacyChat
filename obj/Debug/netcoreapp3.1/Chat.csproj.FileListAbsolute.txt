@@ -14,9 +14,10 @@ C:\Users\Whitebrim\source\repos\Chat\bin\Debug\netcoreapp3.1\Chat.runtimeconfig.
 C:\Users\Whitebrim\source\repos\Chat\bin\Debug\netcoreapp3.1\Chat.dll
 C:\Users\Whitebrim\source\repos\Chat\bin\Debug\netcoreapp3.1\Chat.pdb
 C:\Users\Whitebrim\source\repos\Chat\bin\Debug\netcoreapp3.1\MySqlConnector.dll
-C:\Users\Whitebrim\source\repos\Chat\obj\Debug\netcoreapp3.1\Chat.csproj.CoreCompileInputs.cache
-C:\Users\Whitebrim\source\repos\Chat\obj\Debug\netcoreapp3.1\Chat.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\Whitebrim\source\repos\Chat\obj\Debug\netcoreapp3.1\Chat.csproj.CopyComplete
 C:\Users\Whitebrim\source\repos\Chat\obj\Debug\netcoreapp3.1\Chat.dll
 C:\Users\Whitebrim\source\repos\Chat\obj\Debug\netcoreapp3.1\Chat.pdb
 C:\Users\Whitebrim\source\repos\Chat\obj\Debug\netcoreapp3.1\Chat.genruntimeconfig.cache
+C:\Users\Whitebrim\source\repos\Chat\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\Users\Whitebrim\source\repos\Chat\obj\Debug\netcoreapp3.1\Chat.csproj.CoreCompileInputs.cache
+C:\Users\Whitebrim\source\repos\Chat\obj\Debug\netcoreapp3.1\Chat.MvcApplicationPartsAssemblyInfo.cache

@@ -1,24 +1,29 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 
-namespace Chat
+namespace Chat.Messages
 {
-    public class Message
+    public class MessageBase
     {
         public int id { get; set; }
-        public string nickname { get; set; }
-        public string messageBody { get; set; }
-        public DateTime messageDate { get; set; }
+        public string UserId { get; set; }
+        public string Message { get; set; }
+        public string Date { get; set; }
 
         internal AppDb Db { get; set; }
 
-        public Message()
+        public MessageBase()
         {
         }
 
-        internal Message(AppDb db)
+        public MessageBase(string userId, string text)
+        {
+            this.UserId = userId;
+            this.Message = text;
+        }
+
+        internal MessageBase(AppDb db)
         {
             Db = db;
         }
@@ -26,16 +31,16 @@ namespace Chat
         public async Task InsertAsync()
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"INSERT INTO `legacychat` (`id`, `nickname`, `messageBody`, `messageDate`) VALUES (NULL, @nickname, @messageBody, NULL);";
+            cmd.CommandText = @"INSERT INTO `legacychat` (`UserId`, `Message`) VALUES (@userId, @text);";
             BindParams(cmd);
             await cmd.ExecuteNonQueryAsync();
-            //Id = (int)cmd.LastInsertedId;
         }
 
+        /*
         public async Task UpdateAsync()
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"UPDATE `legacychat` SET `nickname` = @nickname, `messageBody` = @messageBody WHERE `id` = @id;";
+            cmd.CommandText = @"UPDATE `legacychat` SET `UserId` = @UserId, `Message` = @Message WHERE `id` = @id;";
             BindParams(cmd);
             BindId(cmd);
             await cmd.ExecuteNonQueryAsync();
@@ -58,30 +63,21 @@ namespace Chat
                 Value = id,
             });
         }
-
-        private void BindTime(MySqlCommand cmd)
-        {
-            cmd.Parameters.Add(new MySqlParameter
-            {
-                ParameterName = "@messageDate",
-                DbType = DbType.DateTime,
-                Value = messageDate,
-            });
-        }
+        */
 
         private void BindParams(MySqlCommand cmd)
         {
             cmd.Parameters.Add(new MySqlParameter
             {
-                ParameterName = "@messageBody",
+                ParameterName = "@text",
                 DbType = DbType.String,
-                Value = messageBody,
+                Value = Message,
             });
             cmd.Parameters.Add(new MySqlParameter
             {
-                ParameterName = "@nickname",
+                ParameterName = "@userId",
                 DbType = DbType.String,
-                Value = nickname,
+                Value = UserId,
             });
         }
     }

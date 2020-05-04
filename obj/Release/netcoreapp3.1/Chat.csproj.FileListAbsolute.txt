@@ -20,3 +20,4 @@ C:\Users\Whitebrim\source\repos\Chat\obj\Release\netcoreapp3.1\staticwebassets\C
 C:\Users\Whitebrim\source\repos\Chat\obj\Release\netcoreapp3.1\Chat.dll
 C:\Users\Whitebrim\source\repos\Chat\obj\Release\netcoreapp3.1\Chat.pdb
 C:\Users\Whitebrim\source\repos\Chat\obj\Release\netcoreapp3.1\Chat.genruntimeconfig.cache
+C:\Users\Whitebrim\source\repos\Chat\bin\Release\netcoreapp3.1\Newtonsoft.Json.dll
