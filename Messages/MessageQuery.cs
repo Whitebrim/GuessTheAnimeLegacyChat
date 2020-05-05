@@ -55,9 +55,10 @@ namespace Chat.Messages
                     var post = new MessageBase(Db)
                     {
                         id = reader.GetInt32(0),
-                        UserId = reader.GetString(1),
-                        Message = reader.GetString(2),
-                        Date = reader.GetDateTime(3).ToString("dd.MM.yy HH:mm:ss"),
+                        uID = reader.GetInt32(1),
+                        UserId = reader.GetString(2),
+                        Message = reader.GetString(3),
+                        Date = reader.GetDateTime(4).ToString("dd.MM.yy HH:mm:ss"),
                     };
                     posts.Add(post);
                 }
