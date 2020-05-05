@@ -42,6 +42,12 @@ namespace Chat.Messages
             if (callback.valid)
             {
                 UserId = callback.userId;
+
+                #region Moderation
+                //if (Message.Length > 100) Message = Message.Substring(0, 97) + "...";
+                Message = Regex.Replace(Message, @"<size=\d*%?>", "<size=100%>");
+                #endregion
+
                 using var cmd = Db.Connection.CreateCommand();
                 cmd.CommandText = @"INSERT INTO `legacychat` (`UID`, `UserId`, `Message`) VALUES (@uid, @userId, @text);";
                 cmd.Parameters.Add(new MySqlParameter
@@ -72,7 +78,7 @@ namespace Chat.Messages
             #region Moderation
             string untagged = Regex.Replace(userId, "<.*?>", String.Empty);
             #endregion
-
+            
             var callback = new Callback()
             {
                 valid = false
@@ -88,7 +94,7 @@ namespace Chat.Messages
             var result = await ReadUserAsync(await cmd.ExecuteReaderAsync());
             if (result != null)
             {
-                if (result.LastMessageCreated.AddSeconds(2) <= DateTime.Now.AddHours(3))
+                if (result.LastMessageCreated.AddSeconds(3) <= DateTime.Now.AddHours(3))
                 {
                     if (result.LastMessageText != ComputeSha256Hash(message) || result.LastMessageCreated.AddSeconds(20) <= DateTime.Now.AddHours(3))
                     {
