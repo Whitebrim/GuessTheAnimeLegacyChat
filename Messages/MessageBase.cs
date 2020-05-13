@@ -45,6 +45,8 @@ namespace Chat.Messages
 
                 #region Moderation
                 //if (Message.Length > 100) Message = Message.Substring(0, 97) + "...";
+                Message = Message.Replace("[", "");
+                Message = Message.Replace("]", "");
                 Message = Regex.Replace(Message, @"<size=[^>]*>", "<size=100%>");
                 Message = Regex.Replace(Message, "(<s(( |=)[^>]*)?>)?(<b(( |=)[^>]*)?>)?(<u(( |=)[^>]*)?>)?(<i(( |=)[^>]*)?>)?", String.Empty);
                 #endregion
