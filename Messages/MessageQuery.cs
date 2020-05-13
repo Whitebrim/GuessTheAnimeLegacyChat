@@ -32,7 +32,7 @@ namespace Chat.Messages
         public async Task<List<MessageBase>> LatestPostsAsync()
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"SELECT * FROM( SELECT * FROM `legacychat` ORDER BY `id` DESC LIMIT 20) legacychat ORDER BY id ASC;";
+            cmd.CommandText = @"SELECT * FROM( SELECT * FROM `legacychat` ORDER BY `id` DESC LIMIT 26) legacychat ORDER BY id ASC;";
             return await ReadAllAsync(await cmd.ExecuteReaderAsync());
         }
 

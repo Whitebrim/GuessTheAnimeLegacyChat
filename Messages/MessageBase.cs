@@ -45,7 +45,8 @@ namespace Chat.Messages
 
                 #region Moderation
                 //if (Message.Length > 100) Message = Message.Substring(0, 97) + "...";
-                Message = Regex.Replace(Message, @"<size=\d*%?>", "<size=100%>");
+                Message = Regex.Replace(Message, @"<size=[^>]*>", "<size=100%>");
+                Message = Regex.Replace(Message, "(<s(( |=)[^>]*)?>)?(<b(( |=)[^>]*)?>)?(<u(( |=)[^>]*)?>)?(<i(( |=)[^>]*)?>)?", String.Empty);
                 #endregion
 
                 using var cmd = Db.Connection.CreateCommand();
@@ -94,7 +95,7 @@ namespace Chat.Messages
             var result = await ReadUserAsync(await cmd.ExecuteReaderAsync());
             if (result != null)
             {
-                if (result.LastMessageCreated.AddSeconds(3) <= DateTime.Now.AddHours(3))
+                if (result.LastMessageCreated.AddSeconds(2) <= DateTime.Now.AddHours(3))
                 {
                     if (result.LastMessageText != ComputeSha256Hash(message) || result.LastMessageCreated.AddSeconds(20) <= DateTime.Now.AddHours(3))
                     {
@@ -122,12 +123,23 @@ namespace Chat.Messages
                 };
 
                 #region Moderation
+                string managedNickname = userId;
+                managedNickname = managedNickname.Replace("[", "");
+                managedNickname = managedNickname.Replace("]", "");
+                if (managedNickname.Length>21 && managedNickname.Substring(0,21) == "<sprite=\"16\" index=0>")
+                    managedNickname = managedNickname.Substring(0, 21) + Regex.Replace(managedNickname.Substring(21), "<sprite=\"16\"[^>]*>", String.Empty);
+                else
+                    managedNickname = Regex.Replace(managedNickname, "<sprite=\"16\"[^>]*>", String.Empty);
+                managedNickname = Regex.Replace(managedNickname, "(<s(( |=)[^>]*)?>)?(<b(( |=)[^>]*)?>)?(<u(( |=)[^>]*)?>)?(<i(( |=)[^>]*)?>)?", String.Empty);
+                managedNickname = Regex.Replace(managedNickname, @"<size=[^>]*>", "<size=100%>");
                 if (untagged.Length > 120)
-                    newUser.UserIdChanger = "У меня слишком длинный ник";
-                if (untagged.IndexOf("Admin") >= 0 && userId != "<#d74a2a>Admin</color>")
-                    newUser.UserIdChanger = "Самозванец";
-                if (untagged.IndexOf("Аdmin") >= 0)
-                    newUser.UserIdChanger = "Лжеадмин";
+                    managedNickname = "У меня слишком длинный ник";
+                untagged = untagged.Replace("[", "");
+                untagged = untagged.Replace("]", "");
+                if (managedNickname != "<#d74a2a>Admin</color>")
+                    if (Regex.IsMatch(untagged, @"[aа][dд][mм][iіїиn][nпhн]", RegexOptions.IgnoreCase))
+                        managedNickname = "<#r11>С<#br2>А<#rt1>М<#shs>О<#bonk>З<#yyy16l>В<#oskk>А<#rtyo41>Н<#b11>Е<#he9>Ц";
+                newUser.UserIdChanger = managedNickname;
                 #endregion
 
                 callback.userId = newUser.UserIdChanger;
